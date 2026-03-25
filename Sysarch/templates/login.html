@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCS Sit-in Monitoring System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="brand">College of Computer Studies Sit-in Monitoring System</a>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Community ▾</a>
+            <a href="#">About</a>
+            <a href="{{ url_for('login') }}" class="nav-active">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+    </nav>
+
+    <div class="page-body">
+        <div class="login-container">
+
+            <div class="logo-side">
+                <div class="logo-bg">
+                    <img src="{{ url_for('static', filename='ccs.webp') }}" alt="CCS Logo">
+                    <h3 class="logo-title">College of Computer Studies</h3>
+                    <p class="logo-tagline">Inceptum · Innovatio · Muneris</p>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <h2 class="form-title">Welcome Back</h2>
+                <p class="form-subtitle">Sign in to your student account</p>
+
+                {% if error %}
+                    <div class="error-msg">⚠ {{ error }}</div>
+                {% endif %}
+
+                <form method="POST" action="{{ url_for('login') }}">
+
+                    <div class="field-wrap">
+                        <label class="field-label">ID Number</label>
+                        <input type="text" name="id_number" placeholder="Enter a valid ID number">
+                    </div>
+
+                    <div class="field-wrap">
+                        <label class="field-label">Password</label>
+                        <input type="password" name="password" placeholder="Enter your password">
+                    </div>
+
+                    <div class="options-row">
+                        <label><input type="checkbox" name="remember"> Remember me</label>
+                        <a href="#">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">Login</button>
+
+                </form>
+
+                <p class="register-link">
+                    Don't have an account? <a href="{{ url_for('register') }}">Register</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

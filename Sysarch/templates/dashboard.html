@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CCS Sit-in Monitoring System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-page">
+
+    <nav class="navbar">
+        <a href="#" class="brand">College of Computer Studies Sit-in Monitoring System</a>
+        <div class="nav-links">
+            <a href="#">Notification ▾</a>
+            <a href="{{ url_for('dashboard') }}">Home</a>
+            <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+            <a href="#">History</a>
+            <a href="#">Reservation</a>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-wrapper">
+        <div class="dashboard-container">
+
+            <!-- Student Information -->
+            <div class="dash-card student-card">
+                <div class="dash-card-header">Student Information</div>
+                <div class="dash-card-body">
+                    <div class="student-avatar-wrap">
+                        {% if student.profile_pic and student.profile_pic != 'default.png' %}
+                            <img src="{{ url_for('static', filename='uploads/' + student.profile_pic) }}" alt="Avatar" class="student-avatar-img">
+                        {% else %}
+                            <div class="student-avatar">
+                                {{ student.first_name[0] }}{{ student.last_name[0] }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="student-name-block">
+                        <h3>{{ student.first_name }} {{ student.last_name }}</h3>
+                        <p>{{ student.course }} - Year {{ student.course_level }}</p>
+                    </div>
+
+                    <hr class="divider">
+
+                    <div class="student-details">
+                        <div class="info-item">
+                            <span class="info-label">👤 Name</span>
+                            <span class="info-value">{{ student.first_name }} {{ student.middle_name }} {{ student.last_name }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">🎓 Course</span>
+                            <span class="info-value">{{ student.course }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">↕ Year</span>
+                            <span class="info-value">{{ student.course_level }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">✉ Email</span>
+                            <span class="info-value">{{ student.email }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">📍 Address</span>
+                            <span class="info-value">{{ student.address if student.address else 'Not set' }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">⏱ Session</span>
+                            <span class="info-value">30</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Announcement -->
+            <div class="dash-card announcement-card">
+                <div class="dash-card-header">📢 Announcement</div>
+                <div class="dash-card-body">
+                    <div class="announcement-item">
+                        <div class="announcement-meta">CCS Admin | 2026-Feb-11</div>
+                        <div class="announcement-box empty-box">
+                            No new details posted for this announcement yet.
+                        </div>
+                    </div>
+
+                    <div class="announcement-item">
+                        <div class="announcement-meta">CCS Admin | 2024-May-08</div>
+                        <div class="announcement-box">
+                            Important Announcement — We are excited to announce the launch of our new website! 🎉 Explore our latest products and services now!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rules -->
+            <div class="dash-card rules-card">
+                <div class="dash-card-header">Rules and Regulation</div>
+                <div class="dash-card-body rules-body">
+                    <h3>University of Cebu</h3>
+                    <h4>COLLEGE OF INFORMATION &amp; COMPUTER STUDIES</h4>
+                    <h5>LABORATORY RULES AND REGULATIONS</h5>
+
+                    <p>
+                        To avoid embarrassment and maintain camaraderie with your friends and superiors at our laboratories,
+                        please observe the following:
+                    </p>
+
+                    <ol class="rules-list">
+                        <li>Maintain silence, proper decorum, and discipline inside the laboratory. Mobile phones, walkmans and other personal pieces of equipment must be switched off.</li>
+                        <li>Games are not allowed inside the lab. This includes computer-related games, card games and other games that may disturb the operation of the lab.</li>
+                        <li>Surfing the Internet is allowed only with the permission of the instructor. Downloading and installing of software are strictly prohibited.</li>
+                        <li>Eating, drinking, and smoking are strictly prohibited inside the laboratory.</li>
+                        <li>Students are not allowed to go inside the laboratory without the presence of an instructor.</li>
+                    </ol>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CCS Sit-in Monitoring System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="admin-page">
+
+    <nav class="admin-navbar">
+        <a href="{{ url_for('admin_dashboard') }}" class="admin-brand">College of Computer Studies Admin</a>
+        <div class="admin-links">
+            <a href="{{ url_for('admin_dashboard') }}">Home</a>
+            <a href="#" onclick="openSearchModal()">Search</a>
+            <a href="#">Students</a>
+            <a href="#">Sit-in</a>
+            <a href="#">View Sit-in Records</a>
+            <a href="#">Sit-in Reports</a>
+            <a href="#">Feedback Reports</a>
+            <a href="#">Reservation</a>
+            <a href="{{ url_for('admin_logout') }}" class="admin-logout">Log out</a>
+        </div>
+    </nav>
+
+    <div class="admin-wrapper">
+
+        <div class="admin-grid">
+            <!-- Statistics -->
+            <div class="dash-card">
+    <div class="dash-card-header">📊 Statistics</div>
+    <div class="dash-card-body">
+                    <p><strong>Students Registered:</strong> {{ total_students }}</p>
+                    <p><strong>Currently Sit-in:</strong> 0</p>
+                    <p><strong>Total Sit-in:</strong> 15</p>
+
+                    <div class="chart-placeholder">
+                        <div class="fake-pie"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Announcement -->
+            <div class="dash-card">
+    <div class="dash-card-header">📢 Announcement</div>
+    <div class="dash-card-body">
+                    <label class="admin-label">New Announcement</label>
+                    <textarea class="admin-textarea" rows="3"></textarea>
+                    <button class="admin-submit-btn">Submit</button>
+
+                    <h3 class="posted-title">Posted Announcement</h3>
+
+                    <div class="posted-box">
+                        <p><strong>CCS Admin | 2026-Feb-11</strong></p>
+                    </div>
+
+                    <div class="posted-box">
+                        <p><strong>CCS Admin | 2024-May-08</strong></p>
+                        <p>
+                            Important Announcement We are excited to announce the launch of our new website! 🎉
+                            Explore our latest products and services now!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students Table -->
+        <div class="admin-table-section">
+            <h2>Students</h2>
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID Number</th>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Year</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Session</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ student.id_number }}</td>
+                            <td>{{ student.first_name }} {{ student.middle_name }} {{ student.last_name }}</td>
+                            <td>{{ student.course }}</td>
+                            <td>{{ student.course_level }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.address if student.address else 'Not set' }}</td>
+                            <td>30</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" style="text-align:center;">No data available</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h3>Search Student</h3>
+                <button class="close-btn" onclick="closeSearchModal()">×</button>
+            </div>
+            <div class="search-modal-body">
+                <input type="text" id="studentSearchInput" placeholder="Search...">
+                <button onclick="filterStudents()">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openSearchModal() {
+            document.getElementById('searchModal').style.display = 'flex';
+        }
+
+        function closeSearchModal() {
+            document.getElementById('searchModal').style.display = 'none';
+        }
+
+        function filterStudents() {
+            const input = document.getElementById('studentSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('.admin-table tbody tr');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(input) ? '' : 'none';
+            });
+
+            closeSearchModal();
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('searchModal');
+            if (event.target === modal) {
+                closeSearchModal();
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - CCS Sit-in Monitoring System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="brand">College of Computer Studies Sit-in Monitoring System</a>
+        <div class="nav-links">
+            <a href="#">Notification ▾</a>
+            <a href="{{ url_for('dashboard') }}">Home</a>
+            <a href="{{ url_for('edit_profile') }}" class="nav-active">Edit Profile</a>
+            <a href="#">History</a>
+            <a href="#">Reservation</a>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Log out</a>
+        </div>
+    </nav>
+
+
+    <div class="edit-wrapper">
+        <div class="edit-card">
+
+            {% if error %}
+                <div class="alert-error">⚠ {{ error }}</div>
+            {% endif %}
+
+            {% if success %}
+                <div class="alert-success">✓ {{ success }}</div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('edit_profile') }}" enctype="multipart/form-data">
+
+                <div class="section-label">Profile Picture</div>
+                <div class="profile-pic-wrap">
+                    <img
+                        id="preview"
+                        src="{% if student.profile_pic and student.profile_pic != 'default.png' %}{{ url_for('static', filename='uploads/' + student.profile_pic) }}{% else %}https://ui-avatars.com/api/?name={{ student.first_name }}+{{ student.last_name }}&background=4B2D8F&color=fff&size=128{% endif %}"
+                        alt="Profile Picture"
+                    >
+
+                    <div class="profile-pic-info">
+                        <p>Upload a new profile photo</p>
+                        <p class="pic-hint">JPG, PNG, WEBP accepted</p>
+                        <label for="profile_pic" class="btn-upload">Choose Photo</label>
+                        <input
+                            type="file"
+                            id="profile_pic"
+                            name="profile_pic"
+                            accept=".png,.jpg,.jpeg,.webp,image/*"
+                            onchange="previewImage(this)"
+                        >
+                    </div>
+                </div>
+
+                <div class="section-label">Personal Information</div>
+
+                <div class="field-row">
+                    <div class="field-wrap">
+                        <label class="field-label">First Name</label>
+                        <input type="text" name="first_name" value="{{ student.first_name or '' }}" required>
+                    </div>
+
+                    <div class="field-wrap">
+                        <label class="field-label">Last Name</label>
+                        <input type="text" name="last_name" value="{{ student.last_name or '' }}" required>
+                    </div>
+                </div>
+
+                <div class="field-wrap">
+                    <label class="field-label">Middle Name <span class="optional">(optional)</span></label>
+                    <input type="text" name="middle_name" value="{{ student.middle_name or '' }}">
+                </div>
+
+                <div class="field-wrap">
+                    <label class="field-label">Email</label>
+                    <input type="email" name="email" value="{{ student.email or '' }}" required>
+                </div>
+
+                <div class="field-wrap">
+                    <label class="field-label">Address</label>
+                    <input type="text" name="address" value="{{ student.address or '' }}">
+                </div>
+
+                <div class="section-label">
+                    Change Password <span class="optional">(leave blank to keep current)</span>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-wrap">
+                        <label class="field-label">New Password</label>
+                        <input type="password" name="new_password" placeholder="Min. 6 characters">
+                    </div>
+
+                    <div class="field-wrap">
+                        <label class="field-label">Confirm Password</label>
+                        <input type="password" name="confirm_password" placeholder="Repeat new password">
+                    </div>
+                </div>
+
+                <div class="edit-actions">
+                    <a href="{{ url_for('dashboard') }}" class="btn-cancel">Cancel</a>
+                    <button type="submit" class="btn-save">Save Changes</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+</body>
+</html>
