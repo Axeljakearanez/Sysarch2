@@ -47,7 +47,12 @@
 
                     <div class="field-wrap">
                         <label class="field-label">Password</label>
-                        <input type="password" name="password" placeholder="Enter your password">
+                        <div class="password-wrap">
+                            <input type="password" name="password" id="loginPassword" placeholder="Enter your password">
+                            <button type="button" class="toggle-pw" onclick="togglePassword('loginPassword', this)">
+                                👁
+                            </button>
+                        </div>
                     </div>
 
                     <div class="options-row">
@@ -66,6 +71,19 @@
 
         </div>
     </div>
+
+    <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+    </script>
 
 </body>
 </html>
