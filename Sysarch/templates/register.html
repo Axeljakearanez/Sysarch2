@@ -50,7 +50,6 @@
                         <input type="text" name="middle_name" placeholder="Middle name">
                     </div>
 
-                    <!-- ✅ FIXED: Course AND Year Level side by side -->
                     <div class="field-row">
                         <div class="field-wrap">
                             <label class="field-label">Course</label>
@@ -116,11 +115,17 @@
                     <div class="field-row">
                         <div class="field-wrap">
                             <label class="field-label">Password</label>
-                            <input type="password" name="password" placeholder="Min. 6 characters" required>
+                            <div class="password-wrap">
+                                <input type="password" name="password" id="regPassword" placeholder="Min. 6 characters" required>
+                                <button type="button" class="toggle-pw" onclick="togglePassword('regPassword', this)">👁</button>
+                            </div>
                         </div>
                         <div class="field-wrap">
                             <label class="field-label">Repeat Password</label>
-                            <input type="password" name="repeat_password" placeholder="Repeat password" required>
+                            <div class="password-wrap">
+                                <input type="password" name="repeat_password" id="regRepeatPassword" placeholder="Repeat password" required>
+                                <button type="button" class="toggle-pw" onclick="togglePassword('regRepeatPassword', this)">👁</button>
+                            </div>
                         </div>
                     </div>
 
@@ -143,6 +148,19 @@
 
         </div>
     </div>
+
+    <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+    </script>
 
 </body>
 </html>
