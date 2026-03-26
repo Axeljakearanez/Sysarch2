@@ -1143,3 +1143,113 @@ body {
     width: 100%;
     border-radius: 10px 10px 0 0
 }
+/* ─── SIT IN MODAL (SEARCH RESULT) ─── */
+
+.sitin-modal {
+    width: 520px;
+    max-width: 92%;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 20px 40px rgba(30, 20, 60, 0.25);
+    animation: modalPop 0.25s ease;
+}
+
+/* body */
+.sitin-modal-body {
+    padding: 22px 24px;
+}
+
+/* rows */
+.sitin-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+/* labels */
+.sitin-row label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #2d1f52;
+    text-align: right;
+}
+
+/* inputs */
+.sitin-row input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e3daf8;
+    border-radius: 10px;
+    background: #faf7ff;
+    color: #241638;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+/* footer buttons */
+.sitin-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid #ece3ff;
+    background: #faf7ff;
+}
+
+/* close button */
+.btn-close-modal {
+    background: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* sit-in button */
+.btn-sitin {
+    background: linear-gradient(90deg, #221735, #4B2D8F);
+    color: #fff;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* hover */
+.btn-close-modal:hover {
+    opacity: 0.9;
+}
+
+.btn-sitin:hover {
+    opacity: 0.95;
+}
+
+/* animation */
+@keyframes modalPop {
+    from {
+        transform: scale(0.85);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* responsive */
+@media (max-width: 600px) {
+    .sitin-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .sitin-row label {
+        text-align: left;
+    }
+}
