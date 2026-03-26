@@ -852,15 +852,28 @@ body {
     flex-wrap: wrap;
 }
 
+/* NAV LINK HOVER (LIKE SECOND PIC) */
 .admin-links a {
     color: white;
     text-decoration: none;
     font-size: 0.85rem;
-    transition: 0.2s ease;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
 }
 
+/* hover effect */
 .admin-links a:hover {
-    opacity: 0.85;
+    background: rgba(255, 255, 255, 0.08);
+    color: #F5B000;
+    transform: translateY(-1px);
+}
+
+/* active style (like About in 2nd pic) */
+.admin-links a.active {
+    background: rgba(245, 176, 0, 0.15);
+    color: #F5B000;
+    font-weight: 700;
 }
 
 .admin-logout {
