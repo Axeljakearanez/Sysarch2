@@ -28,8 +28,8 @@
         <div class="admin-grid">
             <!-- Statistics -->
             <div class="dash-card">
-    <div class="dash-card-header">📊 Statistics</div>
-    <div class="dash-card-body">
+                <div class="dash-card-header">📊 Statistics</div>
+                <div class="dash-card-body">
                     <p><strong>Students Registered:</strong> {{ total_students }}</p>
                     <p><strong>Currently Sit-in:</strong> 0</p>
                     <p><strong>Total Sit-in:</strong> 15</p>
@@ -42,11 +42,11 @@
 
             <!-- Announcement -->
             <div class="dash-card">
-    <div class="dash-card-header">📢 Announcement</div>
-    <div class="dash-card-body">
+                <div class="dash-card-header">📢 Announcement</div>
+                <div class="dash-card-body">
                     <label class="admin-label">New Announcement</label>
                     <textarea class="admin-textarea" rows="3"></textarea>
-                    <button class="admin-submit-btn">Submit</button>
+                    <button class="admin-submit-btn" type="button">Submit</button>
 
                     <h3 class="posted-title">Posted Announcement</h3>
 
@@ -64,45 +64,24 @@
                 </div>
             </div>
         </div>
-
-        <!-- Students Table -->
-        <div class="admin-table-section">
-            <h2>Students</h2>
-            <div class="admin-table-wrap">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ID Number</th>
-                            <th>Name</th>
-                            <th>Course</th>
-                            <th>Year</th>
-                            <th>Email</th>
-                            <th>Address</th>
-                            <th>Session</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for student in students %}
-                        <tr>
-                            <td>{{ student.id_number }}</td>
-                            <td>{{ student.first_name }} {{ student.middle_name }} {{ student.last_name }}</td>
-                            <td>{{ student.course }}</td>
-                            <td>{{ student.course_level }}</td>
-                            <td>{{ student.email }}</td>
-                            <td>{{ student.address if student.address else 'Not set' }}</td>
-                            <td>30</td>
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td colspan="7" style="text-align:center;">No data available</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
+
+    <!-- Hidden student data source for search -->
+    <table id="adminStudentTable" style="display:none;">
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.id_number }}</td>
+                <td>{{ student.first_name }} {{ student.middle_name }} {{ student.last_name }}</td>
+                <td>{{ student.course }}</td>
+                <td>{{ student.course_level }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.address if student.address else 'Not set' }}</td>
+                <td>30</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <!-- Search Modal -->
     <div class="search-modal" id="searchModal">
@@ -113,36 +92,146 @@
             </div>
             <div class="search-modal-body">
                 <input type="text" id="studentSearchInput" placeholder="Search...">
-                <button onclick="filterStudents()">Search</button>
+                <button type="button" onclick="searchStudent()">Search</button>
             </div>
         </div>
     </div>
 
+    <!-- Sit In Modal -->
+    <div class="search-modal" id="studentModal">
+        <div class="search-modal-content sitin-modal">
+            <div class="search-modal-header">
+                <h3>Sit In Form</h3>
+                <button class="close-btn" onclick="closeStudentModal()">×</button>
+            </div>
+
+            <div class="sitin-modal-body">
+                <div class="sitin-row">
+                    <label>ID Number:</label>
+                    <input type="text" id="modalId" readonly>
+                </div>
+
+                <div class="sitin-row">
+                    <label>Student Name:</label>
+                    <input type="text" id="modalName" readonly>
+                </div>
+
+                <div class="sitin-row">
+                    <label>Purpose:</label>
+                    <input type="text" id="modalPurpose" value="C Programming" readonly>
+                </div>
+
+                <div class="sitin-row">
+                    <label>Lab:</label>
+                    <input type="text" id="modalLab" value="524" readonly>
+                </div>
+
+                <div class="sitin-row">
+                    <label>Remaining Session:</label>
+                    <input type="text" id="modalSession" readonly>
+                </div>
+            </div>
+
+            <div class="sitin-modal-footer">
+                <button type="button" class="btn-close-modal" onclick="closeStudentModal()">Close</button>
+                <button type="button" class="btn-sitin">Sit In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Success Popup -->
+    {% if show_login_popup %}
+    <div class="login-popup" id="loginPopup">
+        <div class="login-popup-content">
+            <div class="checkmark">✔</div>
+            <p>Login Successful!</p>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const popup = document.getElementById('loginPopup');
+            if (popup) {
+                popup.classList.add('hide');
+            }
+        }, 1800);
+
+        setTimeout(() => {
+            const popup = document.getElementById('loginPopup');
+            if (popup) {
+                popup.remove();
+            }
+        }, 2300);
+    </script>
+    {% endif %}
+
     <script>
         function openSearchModal() {
             document.getElementById('searchModal').style.display = 'flex';
+            document.getElementById('studentSearchInput').value = '';
         }
 
         function closeSearchModal() {
             document.getElementById('searchModal').style.display = 'none';
         }
 
-        function filterStudents() {
-            const input = document.getElementById('studentSearchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('.admin-table tbody tr');
+        function openStudentModal(student) {
+            document.getElementById('modalId').value = student.idNumber;
+            document.getElementById('modalName').value = student.fullName;
+            document.getElementById('modalSession').value = student.session;
+            document.getElementById('studentModal').style.display = 'flex';
+        }
 
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(input) ? '' : 'none';
-            });
+        function closeStudentModal() {
+            document.getElementById('studentModal').style.display = 'none';
+        }
 
-            closeSearchModal();
+        function searchStudent() {
+            const input = document.getElementById('studentSearchInput').value.trim().toLowerCase();
+            const rows = document.querySelectorAll('#adminStudentTable tbody tr');
+
+            if (!input) {
+                alert('Please enter a student name or ID number.');
+                return;
+            }
+
+            let found = false;
+
+            for (let row of rows) {
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 7) continue;
+
+                const rowText = row.innerText.toLowerCase();
+
+                if (rowText.includes(input)) {
+                    found = true;
+
+                    openStudentModal({
+                        idNumber: cells[0].innerText.trim(),
+                        fullName: cells[1].innerText.trim(),
+                        session: cells[6].innerText.trim()
+                    });
+
+                    closeSearchModal();
+                    break;
+                }
+            }
+
+            if (!found) {
+                alert('Student not found');
+            }
         }
 
         window.onclick = function(event) {
-            const modal = document.getElementById('searchModal');
-            if (event.target === modal) {
+            const searchModal = document.getElementById('searchModal');
+            const studentModal = document.getElementById('studentModal');
+
+            if (event.target === searchModal) {
                 closeSearchModal();
+            }
+
+            if (event.target === studentModal) {
+                closeStudentModal();
             }
         }
     </script>
